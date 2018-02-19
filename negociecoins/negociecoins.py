@@ -94,11 +94,11 @@ class NegocieCoinsTrade:
 
         return response.json()
 
-    def create_order(self, coin_volume: int, price: int, broker_id=None, user_id=None, pair='BRLBTC', _type='buy',
+    def create_order(self, coin_volume: float, price: float, broker_id=None, user_id=None, pair='BRLBTC', _type='buy',
                      action='user/order', method='POST'):
         """https://broker.negociecoins.com.br/tradeapi/v1/user/order"""
 
-        data_dict = {'pair': pair, 'type': _type, 'volume': coin_volume, 'price': price}
+        data_dict = {'pair': pair, 'type': _type, 'volume': float(coin_volume), 'price': float(price)}
         if broker_id:
             data_dict.update({'brokerID': broker_id})
         if user_id:

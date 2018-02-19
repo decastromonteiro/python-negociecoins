@@ -1,4 +1,10 @@
-import base64, hashlib, hmac, random, time,urllib.parse
+# coding=utf-8
+import base64
+import hashlib
+import hmac
+import random
+import time
+import urllib.parse
 
 '''               
 @param id ID da API gerada pelo usuário na NegocieCoins.
@@ -13,17 +19,17 @@ import base64, hashlib, hmac, random, time,urllib.parse
 def amx_authorization_header(id, key, url, method, body):
     encoded_url = urllib.parse.quote_plus(url).lower()
     method = method.upper()
-    ##==================Tratando o content=====================================
+    # #==================Tratando o content=====================================
     m = hashlib.md5()
     m.update(body.encode('utf-8'))
-    content = '' if body == None else base64.b64encode(m.digest())
-    ##=========================================================================
+    content = '' if body is None else base64.b64encode(m.digest())
+    # #=========================================================================
     timestamp = str(int(time.time()))
     nonce = str(random.randint(0, 100000000))
     data = ''.join([id, method, encoded_url, timestamp, nonce, str(content)]).encode()
     secret = base64.b64decode(key)
     signature = str(base64.b64encode(hmac.new(secret, msg=data, digestmod=hashlib.sha256).digest()))
-    ##===================Cabeçalho no formato AMX==============================
+    # #===================Cabeçalho no formato AMX==============================
     header = 'amx %s' % ':'.join([id, signature, nonce, timestamp])
 
     return header
